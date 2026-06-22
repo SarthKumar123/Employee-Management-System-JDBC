@@ -7,10 +7,12 @@ public class Employeee {
 				
 				String url="jdbc:mysql://localhost:3306/employee";
 				String u="root";
-				String pwd="S@rth!2345";
+				String pwd="your_password";
 				Connection con= DriverManager.getConnection(url,u,pwd);
 				
 				Scanner sc = new Scanner(System.in);
+				
+				EmployeeDAO dao = new EmployeeDAO();
 				
 				while(true) {
 
@@ -28,78 +30,46 @@ public class Employeee {
 				    switch(choice) {
 				    
 				    case 1:// Insert Employee Data
-				    	String q = "Insert into emp values(?,?,?)";
-						PreparedStatement ps = con.prepareStatement(q);
-						
-						System.out.println("Enter Employes Id");
-						int id= sc.nextInt();
-						
-						System.out.println("Enter Employee Name:");
-						String name = sc.next();
+				    	System.out.println("Enter Employee Id:");
+				    	int id = sc.nextInt();
 
-						System.out.println("Enter Employee Salary:");
-						double salary = sc.nextDouble();
-						
-						ps.setInt(1,id);
-						ps.setString(2,name);
-						ps.setDouble(3,salary);
-						
-						int row= ps.executeUpdate();
-						
-						System.out.println(row +" row Updated ");
-				        break;
+				    	System.out.println("Enter Employee Name:");
+				    	String name = sc.next();
+
+				    	System.out.println("Enter Employee Salary:");
+				    	double salary = sc.nextDouble();
+
+				    	Employee emp = new Employee(id, name, salary);
+
+				    	dao.addEmployee(emp);
+
+				    	break;
 
 				    case 2:// Show all the Employee details for the table
-				    	String display = "SELECT * FROM emp";
-
-						PreparedStatement ps2 = con.prepareStatement(display);
-
-						ResultSet rs = ps2.executeQuery();
-
-						while(rs.next()) {
-						    System.out.println(rs.getInt("id"));
-						    System.out.println(rs.getString("name"));
-						    System.out.println(rs.getDouble("salary"));
-						}
-				        break;
+				    	dao.viewEmployees();
+				    	break;
+				    	
 
 				    case 3:// Update the rows inside the table.
-				    	String update ="UPDATE emp SET salary=? WHERE id=?";
-						PreparedStatement ps1 = con.prepareStatement(update);
-						
-						System.out.println("Enter Employee Id:");
-						int updateid = sc.nextInt();
+				    	System.out.println("Enter Employee Id:");
+				        int updateId = sc.nextInt();
 
-						System.out.println("Enter New Salary:");
-						double updatesalary = sc.nextDouble();
-						
-						ps1.setDouble(1, updatesalary);
-						ps1.setInt(2,updateid);
-						
-						int rowsUpdated = ps1.executeUpdate();
-						System.out.println(rowsUpdated + " row updated");
+				        System.out.println("Enter New Salary:");
+				        double updateSalary = sc.nextDouble();
+
+				        dao.updateEmployee(updateId, updateSalary);
+
 				        break;
 
-				    case 4: //Delete the information inside the table.
-				    	String Delete = "Delete from emp where id=?";
-						
-						PreparedStatement ps3 = con.prepareStatement(Delete);
-						
-						System.out.println("Id to delete");
-						int delete_id = sc.nextInt();
-						
-						ps3.setInt(1,delete_id);
-						int rowsdeleted = ps3.executeUpdate();
-						
-						if(rowsdeleted > 0) {
-						    System.out.println("Employee Deleted Successfully");
-						}
-						else {
-						    System.out.println("Employee Not Found");
-						}
-						
-						System.out.println(" Deleted!!!");
+				    case 4:
+
+				        System.out.println("Enter Employee Id:");
+				        int DeleteId = sc.nextInt();
+
+				        dao.deleteEmployee(DeleteId);
+
 				        break;
+				    
 
 				    case 5:
 				        System.exit(0);
