@@ -1,4 +1,6 @@
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EmployeeDAO {
 
@@ -44,9 +46,12 @@ public class EmployeeDAO {
         }
     }
     
-    public void viewEmployees() {
+    public List<Employee> viewEmployees() {
+    		List<Employee> employees = new ArrayList<>();
 
         try {
+        		
+        
 
             String q = "SELECT * FROM emp";
 
@@ -54,23 +59,35 @@ public class EmployeeDAO {
 
             ResultSet rs = ps.executeQuery();
 
-            System.out.println("--------------------------------");
-
+//            System.out.println("--------------------------------");
+//
+//            while(rs.next()) {
+//
+//                System.out.println(
+//                    rs.getInt("id") + "\t" +
+//                    rs.getString("name") + "\t" +
+//                    rs.getDouble("salary")
+//                );
+//            }
+//
+//            System.out.println("--------------------------------");
+            
             while(rs.next()) {
 
-                System.out.println(
-                    rs.getInt("id") + "\t" +
-                    rs.getString("name") + "\t" +
+                Employee emp = new Employee(
+                    rs.getInt("id"),
+                    rs.getString("name"),
                     rs.getDouble("salary")
                 );
-            }
 
-            System.out.println("--------------------------------");
+                employees.add(emp);
+            }
 
         }
         catch(Exception e) {
             e.printStackTrace();
         }
+        return employees;
     }
     public void updateEmployee(int id, double salary) {
 

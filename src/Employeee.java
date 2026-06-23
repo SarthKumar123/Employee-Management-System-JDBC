@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.List;
 import java.util.Scanner;
 public class Employeee {
 		public static void main(String[] args) {
@@ -46,8 +47,22 @@ public class Employeee {
 				    	break;
 
 				    case 2:// Show all the Employee details for the table
-				    	dao.viewEmployees();
-				    	break;
+//				    	dao.viewEmployees();
+//				    	break;
+				    
+
+				        List<Employee> employees = dao.viewEmployees();
+
+				        for(Employee e : employees) {
+
+				            System.out.println(
+				                e.getId() + "\t" +
+				                e.getName() + "\t" +
+				                e.getSalary()
+				            );
+				        }
+
+				        break;
 				    	
 
 				    case 3:// Update the rows inside the table.
